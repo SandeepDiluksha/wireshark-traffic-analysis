@@ -115,3 +115,80 @@ a malicious device can send fake ARP replies to redirect traffic.
 
 ### Screenshot
 ![ARP Analysis](screenshots/arp-analysis.png)
+
+---
+
+## Section 4 — ICMP Traffic Analysis
+
+### What is ICMP?
+ICMP is used for network diagnostics and error reporting. The ping
+command uses ICMP Echo Request and Echo Reply messages to test
+connectivity and measure round trip time.
+
+### Capture details
+- **Target:** 8.8.8.8 (Google DNS)
+- **Packets sent:** 4 pings
+
+### Packet analysis
+
+**ICMP Echo Request**
+- Type: 8 (Echo Request)
+- Code: 0
+- Identifier: 7285 (ox1C75)
+- Sequence number: 1 (0x0001)
+- TTL: 64
+
+**ICMP Echo Reply**
+- Type: 0 (Echo Reply)
+- Code: 0
+- Identifier: 7285 (ox1C75)
+- Sequence number: 1 (0x0001)
+- TTL received: 117
+
+### Key observation
+The TTL value in Google's reply was 117. Since Linux systems
+typically start with TTL 128, this means the packet traversed
+approximately 11 routers between Google's
+server and my laptop.
+
+### Screenshot
+![ICMP Analysis](screenshots/icmp-analysis.png)
+
+---
+
+## Section 5 — HTTP Traffic Analysis
+
+### What is HTTP?
+HTTP is the protocol used to transfer web content. Unlike HTTPS it
+transmits all data in plain text making it visible to anyone capturing
+traffic on the same network.
+
+### Capture details
+- **Target:** example.com
+- **Tool used:** curl -v http://example.com
+
+### Packet analysis
+
+**HTTP GET Request**
+- Method: GET
+- URI: http://example.com/
+- Host: example.com
+- User-Agent: curl/8.5.0
+
+**HTTP Response**
+- Status code: 200 OK
+- Content-Type: text/html
+- Content-Length: 528 bytes
+- Server: Cloudflare
+
+### Security observation
+The full HTML content of example.com was visible in plain text inside
+the captured packets. Any device on the same network running a packet
+capture tool could read this content without any special privileges.
+This demonstrates why HTTPS is essential — it encrypts the content so
+even if traffic is captured the data is unreadable without the
+encryption keys.
+
+### Screenshot
+![HTTP Analysis](screenshots/http-analysis.png)
+![HTTP Stream](screenshots/http-stream.png)
