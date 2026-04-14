@@ -192,3 +192,29 @@ encryption keys.
 ### Screenshot
 ![HTTP Analysis](screenshots/http-analysis.png)
 ![HTTP Stream](screenshots/http-stream.png)
+
+---
+
+## Conclusion
+
+This analysis covered five core networking protocols captured from
+real traffic on my home network:
+
+| Protocol | Purpose | Key Finding |
+|---|---|---|
+| TCP | Reliable connection establishment | Three way handshake uses sequence numbers to guarantee ordered delivery |
+| DNS | Domain name resolution | Multiple IPs returned per domain demonstrates load balancing |
+| ARP | MAC address resolution | Broadcast nature makes ARP spoofing attacks possible |
+| ICMP | Network diagnostics | TTL values reveal approximate hop count to destination |
+| HTTP | Web content transfer | Full content visible in plain text — demonstrates why HTTPS is essential |
+
+### Tools used
+- Wireshark 
+- curl
+- nslookup
+- ping
+
+### Environment
+- OS: Ubuntu Linux
+- Network: Home WiFi
+- All captures performed on personally owned network
